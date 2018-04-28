@@ -3,7 +3,7 @@ A simple implement of ARIMA Host prediction of ModelPredictiveControl on Cloudsi
 see this paper [Dynamic Energy-Aware Capacity Provisioning for Cloud Computing Environments](https://www.researchgate.net/profile/Mohamed_Faten_Zhani/publication/262290042_Dynamic_energy-aware_capacity_provisioning_for_cloud_computing_environments/links/5805835608aef87fbf3bc00e/Dynamic-energy-aware-capacity-provisioning-for-cloud-computing-environments.pdf)
 
 # How to Use
-If you are not familiar with Java Projects, please use [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) and install jdk 1.8+.
+If you are not familiar with Java Projects, please install jdk 1.8+ and use [IntelliJ IDEA](https://www.jetbrains.com/idea/download/), import as a Maven project .
 
 This experiment is based on [CloudSim Plus](https://github.com/manoelcampos/cloudsim-plus) v2.1.0.
 
