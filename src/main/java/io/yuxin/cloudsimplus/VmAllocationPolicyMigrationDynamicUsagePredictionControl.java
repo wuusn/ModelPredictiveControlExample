@@ -129,7 +129,7 @@ public class VmAllocationPolicyMigrationDynamicUsagePredictionControl extends Vm
         }
         // predict Gcpu at time k
         double[] GcpuHistroy = getFixedLengthArrayFromList(allCpuutilizationHistory, n);
-        double Gcpuk = predict(GcpuHistroy, n, 0);
+        double Gcpuk = predict(GcpuHistroy, 12,1);
         // get Wk; Wk = max(Gcpuk/Ccpuk)
         // Ccpuk, capacity for CPU  of a single machine at time k
         double Wk = 0;
@@ -156,11 +156,11 @@ public class VmAllocationPolicyMigrationDynamicUsagePredictionControl extends Vm
         return Xk.intValue()+1;
     }
 
-    private double predict(double[] history, int lag, int index) {
+    private double predict(double[] history, int steps, int index) {
         TimeSeries timeSeries = TimeSeries.from(DoubleFunctions.arrayFrom(history));
         ArimaOrder modelOrder = ArimaOrder.order(0, 1, 1, 0, 1, 1);
         Arima model = Arima.model(timeSeries, modelOrder);
-        Forecast forecast = model.forecast(lag);
+        Forecast forecast = model.forecast(steps);
         return forecast.pointEstimates().at(index);
     }
 
