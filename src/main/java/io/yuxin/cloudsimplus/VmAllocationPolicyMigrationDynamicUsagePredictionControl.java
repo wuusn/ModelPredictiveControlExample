@@ -99,7 +99,7 @@ public class VmAllocationPolicyMigrationDynamicUsagePredictionControl extends Vm
         final int M = hostList.size();   // total number of physical machines
         final int n = this.lag;               // number of lags; the last n observations
         final double acpu = 121;        // somewhat a weight factor
-        final double Eidle = this.averagePowerOffIdle;
+        final double Eidle = this.averagePowerOfIdle;
 
         int Nk = 1; // wight factor the severity of violation, like number of requests in scheduling
         // int Nk = broker.getCloudletWaitingList().size();
