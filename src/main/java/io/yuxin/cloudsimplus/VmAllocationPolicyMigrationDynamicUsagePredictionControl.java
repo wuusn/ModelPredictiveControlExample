@@ -56,34 +56,19 @@ public class VmAllocationPolicyMigrationDynamicUsagePredictionControl extends Vm
      */
     @Override
     public Map<Vm, Host> getOptimizedAllocationMap(final List<? extends Vm> vmList) {
-
         updateHostStateSet();
         this.averagePowerOffIdle = computeAveragePowerOffIdle(getHostList());
-        final Map<Vm, Host> migrationMap = new HashMap<>();
-        //getHostList().forEach(this::addHistoryEntryIfAbsent);
-        System.out.println("prediction begin");
         int nextNumberOfHost = predictNextNumberOfHost(getHostList());
-        System.out.println("predict next number of host:"+nextNumberOfHost);
+        return reconfiguration(nextNumberOfHost);
+    }
 
+    private Map<Vm, Host> reconfiguration(int nextNumberOfHost) {
         if(nextNumberOfHost==-1) {
             System.out.println("predict error");
             return Collections.EMPTY_MAP;
         }
-
-
-        //test migrate a host's vms and shutdown this host
-
-        /*
-        Host host = getHostList().get(6);
-
-        if(host.isActive()) {
-            host.getVmCreatedList().forEach((Vm vm) -> {
-                migrationMap.put(vm, getHostList().get(19));
-            });
-            host.setActive(false);
-        }*/
         int activedNumber = (int) getHostList().stream().filter(host -> host.isActive()).count();
-
+        final Map<Vm, Host> migrationMap = new HashMap<>();
         if(activedNumber < nextNumberOfHost) {
             int need = nextNumberOfHost - activedNumber;
             for(Host host : deadHostSet) {
@@ -105,7 +90,6 @@ public class VmAllocationPolicyMigrationDynamicUsagePredictionControl extends Vm
                 //todo: migrate vms on low usage host
             }
         }
-        updateHostStateSet();
         return migrationMap;
     }
 

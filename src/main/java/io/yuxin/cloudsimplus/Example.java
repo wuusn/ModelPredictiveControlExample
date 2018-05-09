@@ -68,6 +68,7 @@ import org.cloudbus.cloudsim.resources.Pe;
 import org.cloudbus.cloudsim.resources.PeSimple;
 import org.cloudbus.cloudsim.schedulers.cloudlet.CloudletSchedulerTimeShared;
 import org.cloudbus.cloudsim.schedulers.vm.VmSchedulerTimeShared;
+import org.cloudbus.cloudsim.selectionpolicies.power.PowerVmSelectionPolicyMinimumMigrationTime;
 import org.cloudbus.cloudsim.selectionpolicies.power.PowerVmSelectionPolicyMinimumUtilization;
 import org.cloudbus.cloudsim.selectionpolicies.power.PowerVmSelectionPolicyRandomSelection;
 import org.cloudbus.cloudsim.util.Log;
@@ -126,32 +127,16 @@ public final class Example {
         broker0.submitVmList(vmList);
         broker0.submitCloudletList(cloudletList);
 
-        //simulation.addOnClockTickListener(this::addListener);
-
         lastClock = (int) simulation.start();
 
         final List<Cloudlet> finishedList = broker0.getCloudletFinishedList();
 
         new CloudletsTableBuilder(finishedList).build();
 
-        hostList.stream().forEach(this::printHistory);
+        //hostList.stream().forEach(this::printHistory);
 
         System.out.printf("\nEnergy consumption: %.2f joule\n", ((DatacenterSimple)datacenter0).getPower());
 
-    }
-
-    private void addListener(EventInfo info) {
-        double time = info.getTime() - 0.1;
-        System.out.println("Fucking time:"+time);
-        if(time==40.0) {
-            Host host = hostList.get(3);
-            host.getVmCreatedList().forEach((Vm vm) -> { vm.setInMigration(true); });
-            System.out.println("trying to shutdown host");
-            host.setActive(false);
-            host.setFailed(true);
-            System.out.println("After try, Host State: " + host.isActive());
-            //simulation.removeOnClockTickListener(info.getListener());
-        }
     }
 
     private void printHistory(Host host){
@@ -193,10 +178,14 @@ public final class Example {
 //        final VmAllocationPolicyMigrationStaticThreshold fallback =
 //                new VmAllocationPolicyMigrationStaticThreshold(
 //                        new PowerVmSelectionPolicyMinimumUtilization(), HOST_UTILIZATION_THRESHOLD_FOR_VM_MIGRATION);
-//
+
 //        this.allocationPolicy =
 //                new VmAllocationPolicyMigrationMedianAbsoluteDeviation(
 //                        new PowerVmSelectionPolicyMinimumUtilization());
+//        this.allocationPolicy = new VmAllocationPolicyMigrationInterQuartileRange(
+//                new PowerVmSelectionPolicyMinimumMigrationTime(),
+//                HOST_UTILIZATION_THRESHOLD_FOR_VM_MIGRATION,
+//                fallback);
 //        this.allocationPolicy = new VmAllocationPolicyMigrationBestFitStaticThreshold(
 //                new PowerVmSelectionPolicyRandomSelection(), HOST_UTILIZATION_THRESHOLD_FOR_VM_MIGRATION);
 
@@ -204,7 +193,7 @@ public final class Example {
 
         this.allocationPolicy = new VmAllocationPolicyMigrationDynamicUsagePredictionControl();
 
-        //this.allocationPolicy = new VmAllocationPolicySimple();
+//        this.allocationPolicy = new VmAllocationPolicySimple();
 
         Datacenter dc = new DatacenterSimple(simulation, hostList, allocationPolicy);
         dc.setSchedulingInterval(SCHEDULE_INTERVAL);

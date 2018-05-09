@@ -31,7 +31,7 @@ public class Helper {
             peList.add(new PeSimple(1000, new PeProvisionerSimple()));
         }
         Host host = new SimpleHost(2048, 10000, 1000000, peList);
-        //Host host = new HostSimple(2048, 10000, 1000000, peList);
+//        Host host = new HostSimple(2048, 10000, 1000000, peList);
         ResourceProvisioner ramProvisioner = new ResourceProvisionerSimple();
         ResourceProvisioner bwProvisioner = new ResourceProvisionerSimple();
         VmScheduler vmScheduler = new VmSchedulerTimeShared();
