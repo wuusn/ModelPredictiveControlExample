@@ -27,7 +27,7 @@ public class VmAllocationPolicyMigrationDynamicUsagePredictionControl extends Vm
 
     private final List<Double> allCpuutilizationHistory;
 
-    private double averagePowerOffIdle;
+    private double averagePowerOfIdle;
 
     private int lag;
 
@@ -165,7 +165,7 @@ public class VmAllocationPolicyMigrationDynamicUsagePredictionControl extends Vm
     }
 
 
-    private double computeAveragePowerOffIdle(List<Host> hostList) {
+    private double computeAveragePowerOfIdle(List<Host> hostList) {
         double sum = 0;
         for (Host h : hostList) {
             sum += h.getPowerSupply().getPower(0);
