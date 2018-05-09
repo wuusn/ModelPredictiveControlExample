@@ -57,7 +57,7 @@ public class VmAllocationPolicyMigrationDynamicUsagePredictionControl extends Vm
     @Override
     public Map<Vm, Host> getOptimizedAllocationMap(final List<? extends Vm> vmList) {
         updateHostStateSet();
-        this.averagePowerOffIdle = computeAveragePowerOffIdle(getHostList());
+        this.averagePowerOfIdle = computeAveragePowerOfIdle(getHostList());
         int nextNumberOfHost = predictNextNumberOfHost(getHostList());
         return reconfiguration(nextNumberOfHost);
     }
